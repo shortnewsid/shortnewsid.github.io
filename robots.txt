@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://shortnewsid.github.io/sitemap.xml
