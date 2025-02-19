@@ -24,21 +24,25 @@ def generate_sitemap():
             if file.startswith("google") and file.endswith(".html"):
                 continue  
 
-            # Pastikan semua file HTML, termasuk index.html, masuk ke sitemap
-            if file.endswith(".html"):
+            # Buat URL untuk homepage tanpa index.html
+            if file == "index.html":
+                file_url = BASE_URL  # Homepage tanpa index.html
+            elif file.endswith(".html"):
                 file_path = os.path.relpath(os.path.join(root, file), CONTENT_DIR)
                 file_url = f"{BASE_URL}/{file_path.replace(os.sep, '/')}"
+            else:
+                continue  # Lewati jika bukan file HTML
 
-                lastmod = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S+00:00")
+            lastmod = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S+00:00")
 
-                url_entry = f"""  <url>
+            url_entry = f"""  <url>
     <loc>{file_url}</loc>
     <lastmod>{lastmod}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>"""
 
-                url_entries.append(url_entry)
+            url_entries.append(url_entry)
 
     sitemap_content = SITEMAP_TEMPLATE.format("\n".join(url_entries))
 
