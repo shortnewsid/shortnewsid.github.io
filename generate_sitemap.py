@@ -1,7 +1,7 @@
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 
-# URL dasar situs GitHub Pages Anda
+# URL dasar situs GitHub Pages Anda (pastikan tidak ada "/" di akhir)
 BASE_URL = "https://shortnewsid.github.io"
 
 # Folder tempat artikel disimpan (ubah jika berbeda)
@@ -34,11 +34,14 @@ def generate_sitemap():
             elif file.endswith(".html"):
                 file_path = os.path.relpath(os.path.join(root, file), CONTENT_DIR)
                 file_url = f"{BASE_URL}/{file_path.replace(os.sep, '/')}"
+
             else:
                 continue  # Lewati jika bukan file HTML
 
-            # Menggunakan waktu UTC + 7 jam untuk mendapatkan waktu GMT+7
-            lastmod = (datetime.utcnow() + timedelta(hours=7)).strftime("%Y-%m-%dT%H:%M:%S+07:00")
+            # ✅ Ambil waktu modifikasi terakhir dari file
+            file_path = os.path.join(root, file)
+            lastmod_time = datetime.fromtimestamp(os.path.getmtime(file_path), timezone.utc)
+            lastmod = lastmod_time.isoformat()
 
             url_entry = f"""  <url>
     <loc>{file_url}</loc>
@@ -52,7 +55,7 @@ def generate_sitemap():
     with open("sitemap.xml", "w", encoding="utf-8") as f:
         f.write(sitemap_content)
 
-    print("✅ Sitemap berhasil diperbarui dengan waktu GMT+7!")
+    print("✅ Sitemap berhasil diperbarui dengan waktu file terakhir dimodifikasi!")
 
 if __name__ == "__main__":
     generate_sitemap()
