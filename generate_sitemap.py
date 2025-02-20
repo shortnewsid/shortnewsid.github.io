@@ -1,5 +1,5 @@
 import os
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta  # ✅ Tambahkan timedelta
 
 # URL dasar situs GitHub Pages Anda (pastikan tidak ada "/" di akhir)
 BASE_URL = "https://shortnewsid.github.io"
@@ -42,7 +42,6 @@ def generate_sitemap():
             file_path = os.path.join(root, file)
             lastmod_time = datetime.fromtimestamp(os.path.getmtime(file_path), timezone.utc) + timedelta(hours=7)
             lastmod = lastmod_time.isoformat()
-
 
             url_entry = f"""  <url>
     <loc>{file_url}</loc>
