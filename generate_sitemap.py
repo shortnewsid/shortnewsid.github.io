@@ -40,8 +40,9 @@ def generate_sitemap():
 
             # ✅ Ambil waktu modifikasi terakhir dari file
             file_path = os.path.join(root, file)
-            lastmod_time = datetime.fromtimestamp(os.path.getmtime(file_path), timezone.utc)
+            lastmod_time = datetime.fromtimestamp(os.path.getmtime(file_path), timezone.utc) + timedelta(hours=7)
             lastmod = lastmod_time.isoformat()
+
 
             url_entry = f"""  <url>
     <loc>{file_url}</loc>
