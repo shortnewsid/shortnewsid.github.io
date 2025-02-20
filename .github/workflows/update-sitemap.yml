@@ -23,11 +23,11 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt || true  # Jika ada dependency, tambahkan di requirements.txt
+      - name: Install dependencies (jika ada)
+        run: pip install -r requirements.txt || true
 
       - name: Generate sitemap
-        run: python $GITHUB_WORKSPACE/generate_sitemap.py # Jalankan script untuk membuat sitemap.xml
+        run: python generate_sitemap.py  # Jalankan script untuk membuat sitemap.xml
 
       - name: Commit and push changes
         env:
