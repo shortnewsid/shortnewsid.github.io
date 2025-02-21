@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -16,6 +17,43 @@
         <p>Portal Berita Terkini dan Terupdate</p>
         <a href="https://shortnewsid.github.io/sitemap.xml" class="btn">SITEMAP</a>
     </div>
+    <!-- Container untuk daftar postingan -->
+<div class="container">
+  <h1>📌 Daftar Postingan</h1>
+  <p id="loading" class="loading">Memuat postingan...</p>
+  <ul id="post-list" class="sitemap-list"></ul>
+  <a href="https://shortnewsid.github.io" class="btn">🔗 Kunjungi Situs</a>
+</div>
+
+<script>
+  async function loadSitemap() {
+    try {
+      const response = await fetch("https://shortnewsid.github.io/sitemap.xml");
+      const text = await response.text();
+      
+      // Parsing XML
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(text, "text/xml");
+      
+      // Ambil semua <loc> dalam sitemap
+      const urls = xmlDoc.getElementsByTagName("loc");
+      let output = "";
+
+      for (let i = 1; i < urls.length; i++) {  // Mulai dari index 1 agar tidak menampilkan halaman utama
+        const url = urls[i].textContent;
+        output += `<li><a href="${url}" target="_blank">🔗 ${url.replace("https://shortnewsid.github.io/today/", "").replace(".html", "").replace(/-/g, " ")}</a></li>`;
+      }
+      
+      document.getElementById("post-list").innerHTML = output;
+      document.getElementById("loading").style.display = "none"; // Sembunyikan teks loading
+    } catch (error) {
+      console.error("Gagal memuat sitemap:", error);
+      document.getElementById("loading").innerText = "Gagal memuat postingan.";
+    }
+  }
+
+  window.onload = loadSitemap;
+</script>
     <div class="footer">© 2025. INDO NEWS UPDATE - All Rights Reserved</div>
 </body>
 </html>
